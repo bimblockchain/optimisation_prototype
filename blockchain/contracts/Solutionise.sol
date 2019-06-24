@@ -19,9 +19,9 @@ contract Solutionise is Ownable, Pausable {
     event balanceNowUpdated(uint256 _newBalance);
     event problemNowRegistered(uint32 _problemIndex, string _problemId, string _ipfsHash, string _inputs,
         string _output, string _outputTarget, uint _reward, uint _expiry);
-    event userNowRegistered(string _userAddress, string _username, address _payoutAddress);
-    event userNowReset(string _userAddress);
-    event problemNowSolved(string userAddress, string problemId, uint timestamp);
+    event userNowRegistered(address _userAddress, string _username, address _payoutAddress);
+    event userNowUpdated(address _userAddress, string _username, address _payoutAddress);
+    event problemNowSolved(address userAddress, string problemId, uint timestamp);
 
     // Structs & Mappings
     struct Problem {
@@ -37,7 +37,7 @@ contract Solutionise is Ownable, Pausable {
     mapping (uint32 => Problem) public problemList; // Since index 0 means problem ID is unregistered, index 1 will be the first problem
 
     struct User {
-        string userAddress;
+        address userAddress;
         string username;
         address payoutAddress;
     }
@@ -47,7 +47,7 @@ contract Solutionise is Ownable, Pausable {
     // Records status of solution
     enum Status{initialised, submitted, rejected, approved}
     struct Solution {
-        string userAddress;
+        address userAddress;
         string problemId;
         uint timestamp;
         string ipfsHash; // IPFS hash of the solution files
@@ -66,19 +66,19 @@ contract Solutionise is Ownable, Pausable {
 
         //  Hardcoded details for a test user, index 1, who is registered but hasn't started yet
         userIndex[0x32Be343B94f860124dC4fEe278FDCBD38C102D88] = 1;
-        userList[1].userAddress = "id:example:1123456789abcdefghi";
+        userList[1].userAddress = 0x32Be343B94f860124dC4fEe278FDCBD38C102D88;
         userList[1].username = "Test User 1";
         userList[1].payoutAddress = 0x32Be343B94f860124dC4fEe278FDCBD38C102D88;
 
         //  Hardcoded details for a test user, index 2, who is registered and almost finished the challenge
         userIndex[0x32Be343B94f860124dC4fEe278FDCBD38C102D88] = 2;
-        userList[2].userAddress = "id:example:2123456789abcdefghi";
+        userList[2].userAddress = 0x32Be343B94f860124dC4fEe278FDCBD38C102D88;
         userList[2].username = "Test User 2";
         userList[2].payoutAddress = 0x32Be343B94f860124dC4fEe278FDCBD38C102D88;
 
         //  Hardcoded details for a test user, index 3, who is registered and has completed the challenge
         userIndex[0x32Be343B94f860124dC4fEe278FDCBD38C102D88] = 3;
-        userList[3].userAddress = "id:example:3123456789abcdefghi";
+        userList[3].userAddress = 0x32Be343B94f860124dC4fEe278FDCBD38C102D88;
         userList[3].username = "Test User 3";
         userList[3].payoutAddress = 0x32Be343B94f860124dC4fEe278FDCBD38C102D88;
 
@@ -212,6 +212,7 @@ contract Solutionise is Ownable, Pausable {
     /// @param _userAddress User's ID code
     /// @param _username User's username
     function registerUser(
+        address _userAddress,
         string memory _username,
         address _payoutAddress)
         public
@@ -219,52 +220,53 @@ contract Solutionise is Ownable, Pausable {
         {
         require(userIndex[msg.sender] == 0, "User already registered");
         totalUsers++;
-        userIndex[_userId] = totalUsers;
+        userIndex[_userAddress] = totalUsers;
 
-        userList[userIndex[_userId]].userId = _userId;
-        userList[userIndex[_userId]].username = _username;
-        userList[userIndex[_userId]].payoutAddress = _payoutAddress;
+        userList[userIndex[_userAddress]].userAddress = _userAddress;
+        userList[userIndex[_userAddress]].username = _username;
+        userList[userIndex[_userAddress]].payoutAddress = _payoutAddress;
 
-        emit userNowRegistered(_userId, _username, _payoutAddress);
+        emit userNowRegistered(_userAddress, _username, _payoutAddress);
         return true;
     }
 
     /// @dev Updates a user
-    /// @param _userId User's ID code
+    /// @param _userAddress User's ID code
     function updateUser(
+        address _userAddress,
         string memory _username,
         address _payoutAddress)
         public
         returns (bool)
         {
-        require(userIndex[msg.sender] != 0, "User not registered");
+        require(userList[userIndex[msg.sender]].userAddress == _userAddress, "Not correct user.");
 
-        userList[userIndex[_userId]].username = "";
-        userList[userIndex[_userId]].payoutAddress = 0x0;
+        userList[userIndex[_userAddress]].username = _username;
+        userList[userIndex[_userAddress]].payoutAddress = _payoutAddress;
 
-        emit userNowReset(_userId);
+        emit userNowUpdated(_userAddress, _username, _payoutAddress);
         return true;
     }
 
     /// @dev Record the solving of problems
-    /// @param _userId User's ID code
+    /// @param _userAddress User's ID code
     /// @param _username User's username
     /// @param _problemId Problem ID code
     function submitSolution(
-        string memory _userId,
+        address _userAddress,
         string memory _problemId)
         public
         returns (bool)
         {
-        require(userIndex[_userId] > 0, "User not registered"); // User must be registered to submit a solution
+        require(userIndex[_userAddress] > 0, "User not registered"); // User must be registered to submit a solution
 
         totalSolutions++;
 
-        solutionList[totalSolutions].userId = _userId;
+        solutionList[totalSolutions].userAddress = _userAddress;
         solutionList[totalSolutions].problemId = _problemId;
         solutionList[totalSolutions].timestamp = block.timestamp;
 
-        emit problemNowSolved(_userId, _problemId, block.timestamp);
+        emit problemNowSolved(_userAddress, _problemId, block.timestamp);
         return true;
     }
 
@@ -299,17 +301,15 @@ contract Solutionise is Ownable, Pausable {
     }
 
     /// @dev Returns the requested user data by index
-    function getUser(address _userIndex)
+    function getUser(address _userAddress)
         public
         view
         returns (
-        string memory _userId,
         string memory _username,
-        string memory _payoutAddress)
+        address _payoutAddress)
         {
-        _userId = userList[_userIndex].userId;
-        _username = userList[_userIndex].username;
-        _payoutAddress = userList[_userIndex].payoutAddress;
+        _username = userList[userIndex[_userAddress]].username;
+        _payoutAddress = userList[userIndex[_userAddress]].payoutAddress;
     }
 
     /// @dev Returns the requested problem data by index
@@ -339,11 +339,11 @@ contract Solutionise is Ownable, Pausable {
         public
         view
         returns (
-        string memory _userId,
+        address _userAddress,
         string memory _problemId,
         uint _timestamp)
         {
-        _userId = solutionList[_solutionIndex].userId;
+        _userAddress = solutionList[_solutionIndex].userAddress;
         _problemId = solutionList[_solutionIndex].problemId;
         _timestamp = solutionList[_solutionIndex].timestamp;
     }
