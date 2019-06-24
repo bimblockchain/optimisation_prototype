@@ -209,8 +209,9 @@ contract Solutionise is Ownable, Pausable {
     }
 
     /// @dev Register users with a unique index number and associated username
-    /// @param _userAddress User's ID code
+    /// @param _userAddress User's address
     /// @param _username User's username
+    /// @param _payoutAddress User's payout address
     function registerUser(
         address _userAddress,
         string memory _username,
@@ -231,7 +232,9 @@ contract Solutionise is Ownable, Pausable {
     }
 
     /// @dev Updates a user
-    /// @param _userAddress User's ID code
+    /// @param _userAddress User's address
+    /// @param _username User's username
+    /// @param _payoutAddress User's payout address
     function updateUser(
         address _userAddress,
         string memory _username,
@@ -249,8 +252,7 @@ contract Solutionise is Ownable, Pausable {
     }
 
     /// @dev Record the solving of problems
-    /// @param _userAddress User's ID code
-    /// @param _username User's username
+    /// @param _userAddress User's address
     /// @param _problemId Problem ID code
     function submitSolution(
         address _userAddress,
@@ -301,6 +303,7 @@ contract Solutionise is Ownable, Pausable {
     }
 
     /// @dev Returns the requested user data by index
+    /// @param _userAddress User's address
     function getUser(address _userAddress)
         public
         view
@@ -313,6 +316,7 @@ contract Solutionise is Ownable, Pausable {
     }
 
     /// @dev Returns the requested problem data by index
+    /// @param _problemIndex Index of problem
     function getProblem(uint32 _problemIndex)
         public
         view
@@ -335,6 +339,7 @@ contract Solutionise is Ownable, Pausable {
     }
 
     /// @dev Returns the requested solution data by index
+    /// @param _solutionIndex Index of solution
     function getSolution(uint32 _solutionIndex)
         public
         view

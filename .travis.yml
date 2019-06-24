@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+  - "9"
+
+
+branches:
+  only:
+  - master
+
+before_script:
+  - npm install -g ganache-cli
+  - npm install -g truffle
+  - npm install
+
+script:
+  - ganache-cli -p 7545 &
+  - sleep 5
+  - cd blockchain
+  - npm install
+  - truffle test
+
+# deploy:
+#   provider: script
+#   skip_cleanup: true
+#   script: chmod +x deploy.sh && ./deploy.sh
+#   on:
+#     branch: master
