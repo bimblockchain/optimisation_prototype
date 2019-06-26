@@ -1,7 +1,7 @@
 const BIMManager = artifacts.require('./BIMManager.sol');
 const truffleAssert = require('truffle-assertions');
 
-/* These tests ensure the correct operation of the Tender contract.
+/* These tests ensure the correct operation of the BIM Manager contract.
  */
 contract('Testing BIMManager', async (accounts) => {
     /* Ensures that an address can be registerd as a problem owner
@@ -47,8 +47,26 @@ contract('Testing BIMManager', async (accounts) => {
         // create the Problem
         await bimManager.createProblem({ from: accounts[4] });
 
-        const tenterId = await bimManager.problemOwnerProblemIds.call(accounts[4]);
+        const problemId = await bimManager.problemOwnerProblemIds.call(accounts[4]);
 
-        assert.notEqual(tenterId, 0, 'No problem id set');
+        assert.notEqual(problemId, 0, 'No problem id set');
+    });
+
+    /* When a solution is created, a new instance of the Solution contract is deployed
+     * This test checks that the solutionId variable has been incremented, showing
+     * that a new problem has been added.
+     */
+    it('Should create a solution for a registered problem optimiser', async () => {
+        const bimManager = await BIMManager.deployed();
+
+        // register the problem optimiser
+        await bimManager.registerProblemOptimiser({ from: accounts[5] });
+
+        // create the Solution
+        await bimManager.createSolution(1, { from: accounts[5] });
+
+        const solutionId = await bimManager.problemOptimiserSolutionIds.call(accounts[5]);
+
+        assert.notEqual(solutionId, 0, 'No problem id set');
     });
 });

@@ -17,7 +17,7 @@ contract IpfsHashHolder
     {
         bytes memory stringTest = bytes(_ipfsHash);
 
-        // Further work is required on this functin to accurately identify a valid string
+        // Further work is required on this function to accurately identify a valid string
         require (stringTest.length > 0, "String must not be empty");
         _;
     }
@@ -36,7 +36,7 @@ contract IpfsHashHolder
     }
 
     /// @notice Clears the stored hash
-    /// @dev Clears the strores hash
+    /// @dev Clears the strored hash
     function clearHash()
         public
         returns (bool)
@@ -46,14 +46,14 @@ contract IpfsHashHolder
     }
 
     /// @notice Checks if the IPFS hash is set or not
-    /// @dev Converts the hash to a byte arrayu, and tests that it's length is >0
+    /// @dev Converts the hash to a byte array, and tests that it's length is >0
     function hashIsSet()
         public
         view
         returns (bool)
     {
         bytes memory stringTest = bytes(ipfsHash);
-        // This is not a true test - should be chacking for IPFS valididy
+        // This is not a true test - should be checking for IPFS valididy
         return stringTest.length > 0;
     }
 }
