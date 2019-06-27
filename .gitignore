@@ -1,0 +1,14 @@
+.vscode
+contracts/.placeholder
+test/.placeholder
+app/src/contracts
+build
+.vs
+.vscode
+bin
+node_modules
+coverage/
+.env
+.node-xmlhttprequest-sync
+coverage.json
+flattened.sol
