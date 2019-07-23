@@ -12,15 +12,15 @@ import "./Solution.sol";
 /// @dev Contract Project will inherit the contracts Ownable and Pausable from the OpenZeppelin library
 /// @dev Pausable is a circuit breaker which blocks all contract functions expect withdrawal by the owner
 /// @author Andy Watt & Colin McCrae
-contract BIMManager is IpfsHashHolder, Ownable, Pausable
+contract BIMManager is Ownable, Pausable, IpfsHashHolder
 {
-    uint currentProblemId;
-    uint currentSolutionId;
+    uint totalProblems; // Initially zero
+    uint totalSolutions; // Initially zero
 
     mapping (address => bool) public registeredProblemOwners;
-    mapping (address => bool) public registeredProblemOptimisers;
     mapping (address => uint) public problemOwnerProblemIds;
     mapping (uint => address) public problemIdAddresses;
+    mapping (address => bool) public registeredProblemOptimisers;
     mapping (address => uint) public problemOptimiserSolutionIds;
     mapping (uint => address) public solutionIdAddresses;
 
@@ -28,26 +28,22 @@ contract BIMManager is IpfsHashHolder, Ownable, Pausable
     event ProblemOwnerUnregistered(address indexed problemOwnerAddress);
     event ProblemOptimiserRegistered(address indexed problemOptimiserAddress);
     event ProblemOptimiserUnregistered(address indexed problemOptimiserAddress);
+    event ProblemCreated(address indexed problemOwnerAddress, address indexed newProblemAddress);
+    event SolutionCreated(address indexed problemOptimiserAddress, address indexed newSolutionAddress, address indexed problemAddress);
 
-    /// @notice Constructor for the BIMManager contract.
-    /// @dev Takes no arguments, sets the currentTenderId to 1 (zero is used to mean null).
-    constructor () public
-    {
-        currentProblemId = 1;
-        currentSolutionId = 1;
-    }
+    // No non-default constructor required
 
-    /// @notice Modifier which ensures that the sender is registerd as a Problem Owner.
+    /// @notice Modifier which ensures that the sender is registered as a Problem Owner.
     /// @dev Checks that the sender address has an entry in registeredProblemOwners.
-    modifier callerIsProblemOwner()
+    modifier callerIsRegisteredProblemOwner()
     {
         require (registeredProblemOwners[msg.sender], "Caller is not a registered Problem Owner");
         _;
     }
 
-    /// @notice Modifier which ensures that the sender is registerd as a Problem Optimiser.
-    /// @dev Checks that the sender address has an entry in registeredProblemOwners.
-    modifier callerIsProblemOptimiser()
+    /// @notice Modifier which ensures that the sender is registered as a Problem Optimiser.
+    /// @dev Checks that the sender address has an entry in registeredProblemOptimisers.
+    modifier callerIsRegisteredProblemOptimiser()
     {
         require (registeredProblemOptimisers[msg.sender], "Caller is not a registered Problem Optimiser");
         _;
@@ -78,7 +74,7 @@ contract BIMManager is IpfsHashHolder, Ownable, Pausable
         whenNotPaused()
         returns (bool)
     {
-        require(registeredProblemOwners[msg.sender], "Address already registered as a Problem Owner");
+        require(registeredProblemOwners[msg.sender], "Address not registered as a Problem Owner");
 
         registeredProblemOwners[msg.sender] = false;
 
@@ -112,7 +108,7 @@ contract BIMManager is IpfsHashHolder, Ownable, Pausable
         whenNotPaused()
         returns (bool)
     {
-        require(registeredProblemOptimisers[msg.sender], "Address already registered as a Problem Optimiser");
+        require(registeredProblemOptimisers[msg.sender], "Address not registered as a Problem Optimiser");
 
         registeredProblemOptimisers[msg.sender] = false;
 
@@ -127,14 +123,17 @@ contract BIMManager is IpfsHashHolder, Ownable, Pausable
         public
         payable
         whenNotPaused()
-        callerIsProblemOwner()
+        callerIsRegisteredProblemOwner()
         returns (address)
     {
-        problemOwnerProblemIds[msg.sender] = currentProblemId;
+        totalProblems += 1;
+        problemOwnerProblemIds[msg.sender] = totalProblems;
 
-        address newProblemAddress = address((new Problem).value(msg.value)(currentProblemId));
-        problemIdAddresses[currentProblemId] = newProblemAddress;
-        currentProblemId += 1;
+        address newProblemAddress = address((new Problem).value(msg.value)(totalProblems, msg.sender));
+        problemIdAddresses[totalProblems] = newProblemAddress;
+
+        emit ProblemCreated(msg.sender, newProblemAddress);
+
         return newProblemAddress;
     }
 
@@ -143,14 +142,35 @@ contract BIMManager is IpfsHashHolder, Ownable, Pausable
     function createSolution(uint problemId)
         public
         whenNotPaused()
-        callerIsProblemOptimiser()
+        callerIsRegisteredProblemOptimiser()
         returns (address)
     {
-        problemOptimiserSolutionIds[msg.sender] = currentSolutionId;
+        totalSolutions += 1;
+        problemOptimiserSolutionIds[msg.sender] = totalSolutions;
 
-        address newSolutionAddress = address(new Solution(problemIdAddresses[problemId], currentSolutionId));
-        solutionIdAddresses[currentSolutionId] = newSolutionAddress;
-        currentSolutionId += 1;
+        address newSolutionAddress = address(new Solution(problemIdAddresses[problemId], totalSolutions));
+        solutionIdAddresses[totalSolutions] = newSolutionAddress;
+
+        emit SolutionCreated(msg.sender, newSolutionAddress, problemIdAddresses[problemId]);
+
         return newSolutionAddress;
+    }
+
+    /// @dev Returns the current total number of problems
+    function getTotalProblems()
+        public
+        view
+        returns (uint)
+        {
+        return totalProblems;
+    }
+
+    /// @dev Returns the current total number of solutions
+    function getTotalSolutions()
+        public
+        view
+        returns (uint)
+        {
+        return totalSolutions;
     }
 }

@@ -1,12 +1,11 @@
 pragma solidity ^0.5.0;
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./IpfsHashHolder.sol";
 import "./Problem.sol";
 
 /// @title A contract representing a solution to a BIM Problem being represented on the Blockchain
 /// @author Andy Watt & Colin McCrae
-contract Solution is IpfsHashHolder, Ownable
+contract Solution is IpfsHashHolder
 {
     uint public solutionId;
     SolutionState public currentState;
@@ -17,6 +16,7 @@ contract Solution is IpfsHashHolder, Ownable
     constructor(address associatedProblemAddress, uint _solutionId) public
     {
         associatedProblem = Problem(associatedProblemAddress);
+        associatedProblem.attachSolution(address(this));
         solutionId = _solutionId;
         currentState = SolutionState.Initialised; // Contract starts in 'Initialised' state
     }
@@ -42,7 +42,7 @@ contract Solution is IpfsHashHolder, Ownable
     /// @notice Modifier to check the the caller is the owner of the associated problem contract
     modifier onlyProblemOwner()
     {
-        require(msg.sender == associatedProblem.owner(), "Caller is not Problem Owner");
+        require(msg.sender == associatedProblem.problemOwner(), "Caller is not associated Problem Owner");
         _;
     }
 
@@ -61,7 +61,7 @@ contract Solution is IpfsHashHolder, Ownable
         _;
     }
 
-    /// @notice Moves a draft solution to 'Opened' and ready to accept bids
+    /// @notice Moves a draft solution to 'Opened'
     /// @dev sets the enum to SolutionState.Opened
     function openSolution()
         public
@@ -102,7 +102,7 @@ contract Solution is IpfsHashHolder, Ownable
     function rejectSolution()
         public
         onlyProblemOwner
-        checkState(SolutionState.Rejected)
+        checkState(SolutionState.Opened)
         returns(SolutionState)
     {
         currentState = SolutionState.Rejected;

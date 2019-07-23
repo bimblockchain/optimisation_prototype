@@ -1,10 +1,11 @@
 const BIMManager = artifacts.require('./BIMManager.sol');
+const Problem = artifacts.require('./Problem.sol');
 const truffleAssert = require('truffle-assertions');
 
 /* These tests ensure the correct operation of the BIM Manager contract.
  */
 contract('Testing BIMManager', async (accounts) => {
-    /* Ensures that an address can be registerd as a problem owner
+    /* Ensures that an address can be registered as a problem owner
      */
     it('Should register a Problem Owner', async () => {
         const bimManager = await BIMManager.deployed();
@@ -61,6 +62,15 @@ contract('Testing BIMManager', async (accounts) => {
 
         // register the problem optimiser
         await bimManager.registerProblemOptimiser({ from: accounts[5] });
+
+        // Get the problem address
+        const problemId = 1;
+        const problemAddress = await bimManager.problemIdAddresses.call(problemId)
+
+        // Problem must be opened
+        var problem = await Problem.at(problemAddress);
+        await problem.setIpfsHash('Any string will work in here');
+        await problem.openProblem({ from: accounts[4] });
 
         // create the Solution
         await bimManager.createSolution(1, { from: accounts[5] });
