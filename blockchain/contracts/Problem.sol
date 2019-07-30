@@ -1,35 +1,36 @@
 pragma solidity ^0.5.0;
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./IpfsHashHolder.sol";
 
 /// @title A contract representing a BIM Problem being represented on the Blockchain
 /// @author Andy Watt & Colin McCrae
-contract Problem is IpfsHashHolder, Ownable
+contract Problem is IpfsHashHolder
 {
     uint public problemId;
     ProblemState public currentState;
     address private winner;
-    address[] private solutions;
+    address[] public solutions;
+    address public problemOwner;
 
     /// @notice Depolys an instance of the Problem contract
     /// @dev Stores the Problem id for this contract and sets the state to initialised
-    constructor (uint _problemId) public payable
+    constructor (uint _problemId, address _problemOwner) public payable
     {
         problemId = _problemId;
+        problemOwner = _problemOwner;
         currentState = ProblemState.Initialised; // Contract starts in 'Initialised' state
     }
 
-        /// @notice An envent indicating that the contract state has been set to Opened
+        /// @notice An event indicating that the contract state has been set to Opened
     event problemOpened();
 
-    /// @notice An envent indicating that the contract state has been set to Solved
+    /// @notice An event indicating that the contract state has been set to Solved
     event problemSolved();
 
-    /// @notice An envent indicating that the contract state has been set to Completed
+    /// @notice An event indicating that the contract state has been set to Completed
     event problemCompleted();
 
-    /// @notice An envent indicating that the contract state has been set to Cancelled
+    /// @notice An event indicating that the contract state has been set to Cancelled
     event problemCancelled();
 
     /// @notice An enumeration of the possible contract states
@@ -50,10 +51,18 @@ contract Problem is IpfsHashHolder, Ownable
         _;
     }
 
+    /// @notice Modifier to check the the caller is the owner of this problem contract
+    modifier onlyProblemOwner()
+    {
+        require(msg.sender == problemOwner, "Caller is not Problem Owner");
+        _;
+    }
+
     /// @notice Moves a draft problem to 'Opened' and ready to accept bids
     /// @dev sets the enum to ProblemState.Opened
     function openProblem()
         public
+        onlyProblemOwner()
         hasIpfsHash()
         checkState(ProblemState.Initialised)
         returns(ProblemState)
@@ -78,6 +87,7 @@ contract Problem is IpfsHashHolder, Ownable
     /// @param _winner the address of the winning bid
     function solveProblem(address _winner)
         public
+        onlyProblemOwner()
         checkState(ProblemState.Opened)
         returns(ProblemState)
     {
@@ -101,6 +111,7 @@ contract Problem is IpfsHashHolder, Ownable
     /// @dev sets the enum to ProblemState.Completed
     function completedProblem()
         public
+        onlyProblemOwner()
         checkState(ProblemState.Solved)
         returns(ProblemState)
     {
@@ -123,6 +134,7 @@ contract Problem is IpfsHashHolder, Ownable
     /// @dev sets the enum to ProblemState.Cancelled, and does the required clean up
     function cancelProblem()
         public
+        onlyProblemOwner()
         returns(ProblemState)
     {
         currentState = ProblemState.Cancelled;
@@ -140,13 +152,14 @@ contract Problem is IpfsHashHolder, Ownable
         return currentState == ProblemState.Cancelled;
     }
 
-    /// @notice function called by a problem solver to notify the problem owner of their propsal
-    function proposeSolution(address solutionAddress)
+    /// @notice function called by a problem solver to notify the problem owner of their proposal
+    function attachSolution(address solutionAddress)
         public
         checkState(ProblemState.Opened)
         returns (bool)
     {
         solutions.push(solutionAddress);
+        return true;
     }
 
 }
