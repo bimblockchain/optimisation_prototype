@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
@@ -17,7 +16,7 @@ namespace grasshopper_extension
         /// </summary>
         public BIMBlockchainComponent()
           : base("BIM Blockchain", "BIM",
-              "Plugin to transmit data to the blockchain",
+              "Plugin to transmit data to the Ethereum blockchain (Rinkeby testnet)",
               "Blockchain", "BIM Blockchain")
         {
         }
@@ -64,8 +63,10 @@ namespace grasshopper_extension
             if (string.IsNullOrEmpty(address)) { return; }
             if (double.IsNaN(param)) { return; }
 
+            var blockchainInteractions = new BlockchainInteractions();
+            
             // Set the output parameter
-            DA.SetData(0, $" PWD:{password} - ADD:{address} - Param:{param}");
+            DA.SetData(0, blockchainInteractions.CreateJson(address, password, param));
         }
 
         /// <summary>
