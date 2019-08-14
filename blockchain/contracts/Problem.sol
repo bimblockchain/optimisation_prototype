@@ -12,7 +12,7 @@ contract Problem is IpfsHashHolder
     address[] public solutions;
     address public problemOwner;
 
-    /// @notice Depolys an instance of the Problem contract
+    /// @notice Deploys an instance of the Problem contract
     /// @dev Stores the Problem id for this contract and sets the state to initialised
     constructor (uint _problemId, address _problemOwner) public payable
     {
