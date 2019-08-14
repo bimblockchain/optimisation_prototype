@@ -11,7 +11,7 @@ contract Solution is IpfsHashHolder
     SolutionState public currentState;
     Problem public associatedProblem;
 
-    /// @notice Depolys an instance of the Solution contract
+    /// @notice Deploys an instance of the Solution contract
     /// @dev Stores the Solution id for this contract and sets the state to initialised
     constructor(address associatedProblemAddress, uint _solutionId) public
     {
