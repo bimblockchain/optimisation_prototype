@@ -2,6 +2,7 @@
 contracts/.placeholder
 test/.placeholder
 app/src/contracts
+api/src/contracts
 build
 .vs
 .vscode
@@ -12,7 +13,7 @@ coverage/
 .node-xmlhttprequest-sync
 coverage.json
 flattened.sol
-
+packages
 
 # Build results
 [Dd]ebug/

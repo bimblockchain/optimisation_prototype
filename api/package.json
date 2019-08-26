@@ -1,0 +1,30 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "A simple todo list app built in HTML, CSS and JavaScript.",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "truffle-artifactor": "^4.0.29",
+    "truffle-contract": "^4.0.30",
+    "web3": "^1.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api": "node -r esm .\\src\\index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndyWatt83/todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndyWatt83/todo/issues"
+  },
+  "homepage": "https://github.com/AndyWatt83/todo#readme"
+}
