@@ -1,5 +1,5 @@
 const Web3 = require('web3');
-import BIMManager from './contracts/BIMManager.json';
+import BIMManager from '../../app/src/contracts/BIMManager.json';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
 const express = require('express');
