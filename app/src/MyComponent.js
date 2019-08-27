@@ -6,8 +6,6 @@ import {
 } from "drizzle-react-components";
 import IpfsForm from "./IpfsForm"
 
-import logo from "./logo.png";
-
 export default ({ accounts }) => (
     <div className="App">
         <div className="section">
@@ -51,6 +49,10 @@ export default ({ accounts }) => (
                 </td>
             </tr>
             </tbody>
+        </table>
+        <br />
+        <table border="2">
+            <IpfsForm />
         </table>
     </div>
 );
