@@ -14,19 +14,19 @@ export default ({ accounts }) => (
             <h2>Active Account</h2>
             <AccountData accountIndex="0" units="ether" precision="3" />
         </div>
-        <p> This UI is a very simple reference implementation that allows the full life cycle of a tender to be assessed. This is simply intended to demonstrate how the contract interactions work, this is not a complete UI for this tendering system. </p>
+        <p> This UI is a very simple reference implementation that allows BIM Manager System to be tested. </p>
         <br />
         <table border="1">
             <tbody>
             <tr>
                 <td>
-                    Register as Client
+                    Register as Problem Owner
                 </td>
                 <td>
-                    Unegister as Client
+                    Unegister as Problem Owner
                 </td>
                 <td>
-                    Is Registered Client
+                    Is Registered Problem Owner
                 </td>
             </tr>
             <tr>
@@ -39,7 +39,7 @@ export default ({ accounts }) => (
                 <td>
                     <ContractForm
                         contract="BIMManager"
-                        method="unregisterProblemOwnert"
+                        method="unregisterProblemOwner"
                         labels={["Unregister as ProblemOwner"]}/>
                 </td>
                 <td>
