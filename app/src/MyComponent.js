@@ -121,7 +121,7 @@ export default ({ accounts }) => (
             <tbody>
             <tr>
                 <td>
-                    Send tender file to IPFS:
+                    Send problem file to IPFS:
                 </td>
                 <td>
                     <IpfsForm />
@@ -138,7 +138,6 @@ export default ({ accounts }) => (
                         method="associateIPFS"
                         labels={["IPFS Hash", "Problem Address"]}/>
                 </td>
-                
             </tr>
             </tbody>
         </table>
