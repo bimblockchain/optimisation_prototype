@@ -8,6 +8,7 @@ import {
 } from "drizzle-react-components";
 import { Button, Container, Row, Col } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.css";
+import BetterContractForm from "./BetterContractForm";
 
 class ProblemOwnerForm extends Component{
     constructor(props, context) {
@@ -32,30 +33,88 @@ class ProblemOwnerForm extends Component{
 
     AddressIsRegistered = () => {
         return (
-        <div className="container">
-            <div className="row">
-                <div className="col-sm-3">><p>Address is registered</p></div>
-                <div className="col-sm-3">
-                <ContractForm
-                    contract="BIMManager"
-                    method="unregisterProblemOwner"
-                    labels={["Unregister as Problem Owner"]}/>
-                </div>
-            </div>
+        <div>
+            <Container>
+                <Row>
+                    <Col><p>Address is registered</p></Col>
+                    <Col>
+                        <BetterContractForm
+                            contract="BIMManager"
+                            method="unregisterProblemOwner"
+                            submitText="Un-Register"
+                            buttonClassName = "btn btn-warning btn-block"/>
+                    </Col>
+                </Row>
+            </Container>
         </div>
         );
     };
 
     AddressIsNotRegistered = () => {
         return (
-            <div>
-                <p>Address is not registered</p>
-                <ContractForm
-                        contract="BIMManager"
-                        method="registerProblemOwner"
-                        labels={["Register as ProblemOwner"]}/>
-            </div>
+            <Container>
+                <Row>
+                    <Col><p>Address is not registered</p></Col>
+                    <Col>
+                        <BetterContractForm
+                            contract="BIMManager"
+                            method="registerProblemOwner"
+                            submitText="Register"
+                            buttonClassName = "btn btn-success btn-block"/>
+                    </Col>
+                </Row>
+            </Container>
             );
+    };
+
+    CreateNewProblem = () => {
+        return (
+            <Container>
+                <Row>
+                    <Col>
+                        Create a New Problem
+                    </Col>
+                    <Col>
+                    <BetterContractForm
+                        contract="BIMManager"
+                        method="createProblem"
+                        submitText="Create"
+                        buttonClassName = "btn btn-primary btn-block"/>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    };
+
+    LatestProblemAddress = () => {
+        return (
+            <Container>
+                <Row>
+                    <Col>
+                        Latest Problem Address
+                    </Col>
+                    <Col>
+                        <ContractData
+                            contract="BIMManager"
+                            method="problemIdAddresses"
+                            methodArgs={[1]}/>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    };
+
+    Template = () => {
+        return (
+            <Container>
+                <Row>
+                    <Col>
+                    </Col>
+                    <Col>
+                    </Col>
+                </Row>
+            </Container>
+        );
     };
 
     render() {
@@ -71,10 +130,13 @@ class ProblemOwnerForm extends Component{
             registeredStatus = this.AddressIsRegistered();
         }
 
+        var createNew = this.addressIsRegistered() ? this.CreateNewProblem() : <p>Register Address to add new Problem</p>
+
         return (
             <div className="app">
-                <Button variant="primary">Primary</Button>
-                <p>{registeredStatus}</p>
+                {registeredStatus}
+                {createNew}
+                {this.addressIsRegistered() ? this.LatestProblemAddress() : ''}
             </div>
         )
     }

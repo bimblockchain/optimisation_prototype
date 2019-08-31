@@ -15,7 +15,7 @@ const translateType = type => {
   }
 };
 
-class ContractForm extends Component {
+class BetterContractForm extends Component {
   constructor(props, context) {
     super(props);
 
@@ -107,22 +107,22 @@ class ContractForm extends Component {
         })}
         <button
           key="submit"
-          className="pure-button"
+          className={this.props.buttonClassName ? this.props.buttonClassName : 'pure-button'}
           type="button"
           onClick={this.handleSubmit}
         >
-          {this.props.submitText}
+          {this.props.submitText ? this.props.submitText : 'Submit'}
         </button>
       </form>
     );
   }
 }
 
-ContractForm.contextTypes = {
+BetterContractForm.contextTypes = {
   drizzle: PropTypes.object,
 };
 
-ContractForm.propTypes = {
+BetterContractForm.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
@@ -140,4 +140,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default drizzleConnect(ContractForm, mapStateToProps);
+export default drizzleConnect(BetterContractForm, mapStateToProps);
