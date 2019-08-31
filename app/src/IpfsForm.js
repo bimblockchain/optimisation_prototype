@@ -61,7 +61,7 @@ IpfsForm.contextTypes = {
     drizzle: PropTypes.object
 }
 
-  /*
+    /*
    * Export connected component.
    */
 
