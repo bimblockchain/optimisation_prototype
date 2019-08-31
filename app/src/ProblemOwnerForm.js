@@ -1,14 +1,19 @@
 import { drizzleConnect } from 'drizzle-react'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+//import W3 from 'web3';
 import {
     AccountData,
     ContractData,
     ContractForm,
 } from "drizzle-react-components";
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.css";
 import BetterContractForm from "./BetterContractForm";
+import IpfsForm from "./IpfsForm";
+
+import problemContractArtifacts from './contracts/Problem.json';
+//const web3 = new W3(new W3.providers.HttpProvider('https://localhost:7545'));
 
 class ProblemOwnerForm extends Component{
     constructor(props, context) {
@@ -26,8 +31,6 @@ class ProblemOwnerForm extends Component{
     };
 
     addressIsRegistered = () => {
-        console.log(this.state.registeredProblemOwnersIndex);
-        console.log(this.props.contracts.BIMManager.registeredProblemOwners);
         return this.props.contracts.BIMManager.registeredProblemOwners[this.state.registeredProblemOwnersIndex].value;
     };
 
@@ -104,6 +107,35 @@ class ProblemOwnerForm extends Component{
         );
     };
 
+    GetProblemContractDetails = () => {
+        return (
+            <Container>
+                <Row>
+                    <Col>
+                        Deets
+                    </Col>
+                    <Col>
+                        <ContractData
+                            contract="Problem"
+                            method="currentState"/>
+                    </Col>
+                    <Col>
+                    <ContractForm
+                            contract="Problem"
+                            method="openProblem"/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <ContractData
+                            contract="Problem"
+                            method="ipfsHash"/>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    };
+
     Template = () => {
         return (
             <Container>
@@ -115,6 +147,25 @@ class ProblemOwnerForm extends Component{
                 </Row>
             </Container>
         );
+    };
+
+    LoadProblemContract = async () => {
+        console.log('hello');
+        var address = '0x623F0272B276C1B82Adc408983C257129DF90C5C';
+        var contract = new this.context.drizzle.web3.eth.Contract(problemContractArtifacts.abi)
+        contract._address = address;
+        var contractConfig = {
+            contractName: 'Problem',
+            web3Contract: contract
+        };
+        var events = ['problemOpened']
+        this.context.drizzle.addContract(contractConfig, events)
+
+        this.state.currentStateIndex = this.contracts.Problem.methods.currentState.cacheCall()
+        this.state.ipfsHashIndex = this.contracts.Problem.methods.ipfsHash.cacheCall()
+
+        console.log(this.contracts);
+        console.log(this.state);
     };
 
     render() {
@@ -137,6 +188,35 @@ class ProblemOwnerForm extends Component{
                 {registeredStatus}
                 {createNew}
                 {this.addressIsRegistered() ? this.LatestProblemAddress() : ''}
+
+                <table border="2">
+            <tbody>
+            <tr>
+                <td>
+                    Send problem file to IPFS:
+                </td>
+                <td>
+                    <IpfsForm />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    IPFS Send hash to Problem contract:
+                </td>
+                <td>
+                    <p>Paste in the values from above</p>
+                    <ContractForm
+                        contract="BIMManager"
+                        method="associateIPFS"
+                        labels={["IPFS Hash", "Problem Address"]}/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+                <button onClick={this.LoadProblemContract}>AAAAA</button>
+                {this.contracts.Problem ? this.GetProblemContractDetails() : ''}
             </div>
         )
     }
