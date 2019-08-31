@@ -6,6 +6,7 @@ import {
 } from "drizzle-react-components";
 import IpfsForm from "./IpfsForm";
 import ProblemOwnerForm from "./ProblemOwnerForm";
+import SelectedProblemForm from "./SelectedProblemForm";
 import { Button, Container, Row, Col } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -34,7 +35,7 @@ export default ({ accounts }) => (
                 </div>
                 <div className="col-sm-6">
                     <h3>Selected Problem Details</h3>
-                    <p>Lorem ipsum dolor..</p>
+                    <SelectedProblemForm accounts = {accounts}/>
                 </div>
             </div>
             <div className="row">

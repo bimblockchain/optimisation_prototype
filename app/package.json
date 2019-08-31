@@ -13,7 +13,7 @@
     "react-dom": "^16.9.0",
     "react-scripts": "3.0.1",
     "reactstrap": "^8.0.1",
-    "truffle-contract": "^4.0.30"
+    "truffle-contract": "^4.0.31"
   },
   "scripts": {
     "start": "react-scripts start",
