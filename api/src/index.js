@@ -1,5 +1,6 @@
 const Web3 = require('web3');
 import BIMManager from '../../app/src/contracts/BIMManager.json';
+import Solution from '../../app/src/contracts/Solution.json';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
 const express = require('express');
@@ -24,49 +25,26 @@ api.post('/add', (req, res) => {
 
 api.post('/sendTransaction', async (req, res) => {
     console.log('start of blockchain interaction');
-    console.log(req.body);
-    console.log(address);
+    var optimisedValue = req.body.OptimisedValue;
+    var contractAddress = req.body.Address;
+    var privateKey = req.body.PrivateKey;
+    var contractAbi = Solution.abi;
+    var contract = new web3.eth.Contract(contractAbi, contractAddress);
+    var sendValue = contract.methods.sendValue(optimisedValue).encodeABI();
+    var transactionToIncrementCounter = await web3.eth.accounts.signTransaction(
+        {
+            data: sendValue,
+            to: contractAddress,
+            gas: '2000000',
+            value: '1'
+        },
+        privateKey
+    );
+    console.log(transactionToIncrementCounter);
+    web3.eth.sendSignedTransaction(transactionToIncrementCounter.rawTransaction)
+        .then(receipt => console.log("Transaction receipt: ", receipt))
+        .catch(err => console.error(err));
 
     res.send('Success')
 
 });
-
-const registerProblemOwner = async () => {
-    console.log('registerProblemOwner');
-    var x = await bimManagerContract.methods.registerProblemOwner().call() //.catch((err) => { console.log(err); });
-    return x;
-}
-
-const createProblem = async () => {
-    console.log('createProblem');
-    return await bimManagerContract.methods.createProblem().call()
-}
-
-    // web3.eth.getAccounts().then((accounts) => {
-    //     console.log(accounts);
-    // }).catch(console.log);
-// account = (accounts[0]);
-// console.log(account);
-// // web3.eth.getBalance(account).then((val)=> {
-// //     console.log(val);
-// // });
-
-
-
-// using web3 1.0.0-beta.23
-
-// var gethEndpoint = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-// var contract = new gethEndPoint.eth.Contract(contractAbi, contractAddress);
-// var incrementCounter = contract.methods.SmarContractIncrementCounterFunction().encodeABI();
-
-// var transactionToIncrementCounter = gethEndPoint.eth.accounts.signTransaction(
-//     {
-//         data: incrementCounter,
-//         to: contractAddress,
-//         gas: '2000000',
-//         value: '1'
-//     },
-//     '0x' + privateKey
-// );
-
-// gethEndPoint.eth.sendSignedTransaction(transactionToIncrementCounter);
