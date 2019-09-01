@@ -80,16 +80,14 @@ class SelectedProblemForm extends Component{
             <Container>
                 <Row>
                     <Col>
-                        Selected Problem Address
+                        Address:
                     </Col>
                     <Col>
-                        <div className="badge badge-primary text-wrap">
                         <BetterContractData
                             contract="BIMManager"
                             method="problemIdAddresses"
                             methodArgs={[this.GetProblemIdFromUserAddress()]}
                             callBack={this.SelectedAddressCallback}/>
-                        </div>
                     </Col>
                 </Row>
                 <Row>
@@ -147,10 +145,16 @@ class SelectedProblemForm extends Component{
         this.contracts.BIMManager.methods.associateIPFS.cacheSend(this.state.latestIpfsHash, address);
     };
 
+
+
+    divStyle = {
+        border: '5px solid white'
+    };
+
     SendIpfsHashToBlockchain = () => {
         return (
             <Container>
-                <Row>
+                <Row style={this.divStyle}>
                     <Col>
                         Send IPFS Hash to selected contract
                     </Col>
@@ -160,19 +164,17 @@ class SelectedProblemForm extends Component{
                     </Button>
                     </Col>
                 </Row>
-                <Row>
+                <Row style={this.divStyle}>
                     <Col>
                         Associated IPFS Hash:
                     </Col>
                     <Col>
-                    <div className="badge badge-primary text-wrap">
                         <ContractData
                             contract="Problem"
                             method="ipfsHash"/>
-                    </div>
                     </Col>
                 </Row>
-                <Row>
+                <Row style={this.divStyle}>
                     <Col>
                         Open Problem:
                     </Col>
@@ -184,32 +186,45 @@ class SelectedProblemForm extends Component{
                         buttonClassName = "btn btn-primary btn-block"/>
                     </Col>
                 </Row>
+                <Row style={this.divStyle}>
+                    <Col>
+                        Solve Problem:
+                    </Col>
+                    <Col>
+                    <BetterContractForm
+                        contract="Problem"
+                        method="solveProblem"
+                        submitText="Solve"
+                        buttonClassName = "btn btn-primary btn-block"/>
+                    </Col>
+                </Row>
+                <Row style={this.divStyle}>
+                    <Col>
+                        Complete Problem:
+                    </Col>
+                    <Col>
+                    <BetterContractForm
+                        contract="Problem"
+                        method="completedProblem"
+                        submitText="Complete"
+                        buttonClassName = "btn btn-primary btn-block"/>
+                    </Col>
+                </Row>
+                <Row style={this.divStyle}>
+                    <Col>
+                        Cancel Problem:
+                    </Col>
+                    <Col>
+                    <BetterContractForm
+                        contract="Problem"
+                        method="cancelProblem"
+                        submitText="Cancel"
+                        buttonClassName = "btn btn-primary btn-block"/>
+                    </Col>
+                </Row>
             </Container>
         );
     };
-
-    // GetProblemContractDetails = () => {
-    //     return (
-    //         <Container>
-    //             <Row>
-    //                 <Col>
-    //                     Problem ID:
-    //                 </Col>
-    //                 <Col>
-    //                     <ContractData
-    //                         contract="Problem"
-    //                         method="currentState"/>
-    //                 </Col>
-    //                 <Col>
-    //                 <ContractForm
-    //                         contract="Problem"
-    //                         method="openProblem"
-    //                         methodArgs={this.props.accounts[0]}/>
-    //                 </Col>
-    //             </Row>
-    //         </Container>
-    //     );
-    // };
 
     render() {
         if (!(this.state.problemOwnerProblemIdsIndex in this.props.contracts.BIMManager.problemOwnerProblemIds)) { return <span>Fetching...</span>; }
@@ -219,8 +234,6 @@ class SelectedProblemForm extends Component{
                 {this.GetProblemIdFromUserAddress() < 1 ?
                     'Create a problem from this address' :
                     this.ProblemInteractions()}
-{/* 
-                {this.contracts.Problem ? this.GetProblemContractDetails() : ''} */}
 
                 {this.contracts.Problem ? this.IpfsInteraction() : ''}
 

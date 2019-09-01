@@ -55,25 +55,30 @@ class SelectedSolutionForm extends Component{
             'solutionCancelled'
         ]
         this.context.drizzle.addContract(contractConfig, events)
+        this.state.currentStateIndex =
+            this.contracts.Solution.methods.currentState.cacheCall()
 
-        this.state.currentStateIndex = this.contracts.Solution.methods.currentState.cacheCall()
+        this.state.getAssociatedProblemIpfsHashIndex =
+            this.contracts.Solution.methods.getAssociatedProblemIpfsHash.cacheCall()
+    };
+
+    divStyle = {
+        border: '5px solid white'
     };
 
     SolutionInteractions = () => {
         return (
             <Container>
-                <Row>
+                <Row style={this.divStyle}>
                     <Col>
-                        Selected Solution Address
+                        Address:
                     </Col>
                     <Col>
-                        <div className="badge badge-primary text-wrap">
                         <BetterContractData
                             contract="BIMManager"
                             method="solutionIdAddresses"
                             methodArgs={[this.GetSolutionIdFromUserAddress()]}
                             callBack={this.SelectedAddressCallback}/>
-                        </div>
                     </Col>
                 </Row>
                 <Row>
@@ -112,9 +117,19 @@ class SelectedSolutionForm extends Component{
         console.log(this.state.selectedAddress);
     };
 
+    GetIpfsHash = () => {
+        //return await this.contracts.Solution.methods.getAssociatedProblemIpfsHash().call();
+        if (!(this.state.getAssociatedProblemIpfsHashIndex in this.props.contracts.Solution.getAssociatedProblemIpfsHash)) { return ""; }
+
+        return this.props.contracts.Solution.getAssociatedProblemIpfsHash[
+            this.state.getAssociatedProblemIpfsHashIndex
+        ].value;
+    };
+
     IpfsFileLink = () => {
+        var ipfsUrl = 'http://127.0.0.1:8080/ipfs/' + this.GetIpfsHash()
         return (
-        <a href = 'http://127.0.0.1:8080/ipfs/QmR8Djkiq3aNJSxdqTSNPo6RqRXZ9VKd5c6oA5qATNJRS2'>
+        <a href = {ipfsUrl}>
             Click Here
         </a>
         );
