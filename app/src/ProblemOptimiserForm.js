@@ -6,16 +6,13 @@ import { Container, Row, Col } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.css";
 import BetterContractForm from "./BetterContractForm";
 
-import problemContractArtifacts from './contracts/Problem.json';
-//const web3 = new W3(new W3.providers.HttpProvider('https://localhost:7545'));
-
-class ProblemOwnerForm extends Component{
+class ProblemOptimiserForm extends Component{
     constructor(props, context) {
         super(props)
         this.contracts = context.drizzle.contracts
         this.state = {
             getTotalProblemsIndex: this.contracts.BIMManager.methods.getTotalProblems.cacheCall(),
-            registeredProblemOwnersIndex: this.contracts.BIMManager.methods.registeredProblemOwners.cacheCall(...[this.props.accounts[0]]),
+            registeredProblemOptimisersIndex: this.contracts.BIMManager.methods.registeredProblemOptimisers.cacheCall(...[this.props.accounts[0]]),
         };
         //this.onIPFSSubmit = this.onIPFSSubmit.bind(this);
     }
@@ -25,7 +22,7 @@ class ProblemOwnerForm extends Component{
     };
 
     addressIsRegistered = () => {
-        return this.props.contracts.BIMManager.registeredProblemOwners[this.state.registeredProblemOwnersIndex].value;
+        return this.props.contracts.BIMManager.registeredProblemOptimisers[this.state.registeredProblemOptimisersIndex].value;
     };
 
     AddressIsRegistered = () => {
@@ -37,7 +34,7 @@ class ProblemOwnerForm extends Component{
                     <Col>
                         <BetterContractForm
                             contract="BIMManager"
-                            method="unregisterProblemOwner"
+                            method="unregisterProblemOptimiser"
                             submitText="Un-Register"
                             buttonClassName = "btn btn-warning btn-block"/>
                     </Col>
@@ -55,7 +52,7 @@ class ProblemOwnerForm extends Component{
                     <Col>
                         <BetterContractForm
                             contract="BIMManager"
-                            method="registerProblemOwner"
+                            method="registerProblemOptimiser"
                             submitText="Register"
                             buttonClassName = "btn btn-success btn-block"/>
                     </Col>
@@ -69,7 +66,7 @@ class ProblemOwnerForm extends Component{
             <Container>
                 <Row>
                     <Col>
-                        Create a New Problem
+                        Create a New Solution
                     </Col>
                     <Col>
                     <BetterContractForm
@@ -83,25 +80,6 @@ class ProblemOwnerForm extends Component{
         );
     };
 
-    LatestProblemAddress = () => {
-        return (
-            <Container>
-                <Row>
-                    <Col>
-                        Latest Problem Address
-                    </Col>
-                    <Col>
-                        <div className="badge badge-primary text-wrap">
-                        <ContractData
-                            contract="BIMManager"
-                            method="problemIdAddresses"
-                            methodArgs={[1]}/>
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
-        );
-    };
 
     Template = () => {
         return (
@@ -119,7 +97,7 @@ class ProblemOwnerForm extends Component{
     render() {
         if (
             !(this.state.getTotalProblemsIndex in this.props.contracts.BIMManager.getTotalProblems &&
-                this.state.registeredProblemOwnersIndex in this.props.contracts.BIMManager.registeredProblemOwners
+                this.state.registeredProblemOptimisersIndex in this.props.contracts.BIMManager.registeredProblemOptimisers
             )
         ) { return <span>Fetching...</span>; }
 
@@ -129,19 +107,18 @@ class ProblemOwnerForm extends Component{
             registeredStatus = this.AddressIsRegistered();
         }
 
-        var createNew = this.addressIsRegistered() ? this.CreateNewProblem() : <p>Register Address to add new Problem</p>
+        var createNew = this.addressIsRegistered() ? this.CreateNewProblem() : <p>Register Address to add new Solution</p>
 
         return (
             <div className="app">
                 {registeredStatus}
                 {createNew}
-                {/* {this.addressIsRegistered() ? this.LatestProblemAddress() : ''} */}
             </div>
         )
     }
 }
 
-ProblemOwnerForm.contextTypes = {
+ProblemOptimiserForm.contextTypes = {
     drizzle: PropTypes.object
 }
 
@@ -155,4 +132,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default drizzleConnect(ProblemOwnerForm, mapStateToProps)
+export default drizzleConnect(ProblemOptimiserForm, mapStateToProps)
