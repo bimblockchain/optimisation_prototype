@@ -89,6 +89,19 @@ class SelectedProblemForm extends Component{
                 </Row>
                 <Row>
                     <Col>
+                        Selected Problem ID
+                    </Col>
+                    <Col>
+                        <div className="badge badge-primary text-wrap">
+                        <ContractData
+                            contract="BIMManager"
+                            method="problemOwnerProblemIds"
+                            methodArgs={[this.props.accounts[0]]}/>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
                         Load Problem
                     </Col>
                     <Col>

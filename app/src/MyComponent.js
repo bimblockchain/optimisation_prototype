@@ -1,21 +1,18 @@
 import React from "react";
 import {
     AccountData,
-    ContractData,
-    ContractForm,
 } from "drizzle-react-components";
-import IpfsForm from "./IpfsForm";
 import ProblemOwnerForm from "./ProblemOwnerForm";
 import ProblemOptimiserForm from "./ProblemOptimiserForm";
 import SelectedProblemForm from "./SelectedProblemForm";
-import { Button, Container, Row, Col } from 'reactstrap';
+import SelectedSolutionForm from "./SelectedSolutionForm";
 import "bootstrap/dist/css/bootstrap.css";
 
 export default ({ accounts }) => (
     <div>
         <div className="jumbotron text-center">
             <h1>BIM Blockchain Prototype</h1>
-            <p>Example integration Between Grasshoopper and the Ethereum Blockchain</p>
+            <p>Example integration between Grasshoopper and the Ethereum Blockchain</p>
         </div>
 
         <div className="container">
@@ -46,7 +43,7 @@ export default ({ accounts }) => (
                 </div>
                 <div className="col-sm-6">
                     <h3>Selected Solution Details</h3>
-                    <p>asdasdasdsd..</p>
+                    <SelectedSolutionForm accounts = {accounts}/>
                 </div>
             </div>
         </div>

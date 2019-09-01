@@ -71,7 +71,7 @@ class ProblemOptimiserForm extends Component{
                     <Col>
                     <BetterContractForm
                         contract="BIMManager"
-                        method="createProblem"
+                        method="createSolution"
                         submitText="Create"
                         buttonClassName = "btn btn-primary btn-block"/>
                     </Col>
