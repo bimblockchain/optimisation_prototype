@@ -1,7 +1,6 @@
 import { drizzleConnect } from 'drizzle-react'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ContractData, ContractForm,} from "drizzle-react-components";
 import { Container, Row, Col } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.css";
 import BetterContractForm from "./BetterContractForm";
@@ -74,20 +73,6 @@ class ProblemOptimiserForm extends Component{
                         method="createSolution"
                         submitText="Create"
                         buttonClassName = "btn btn-primary btn-block"/>
-                    </Col>
-                </Row>
-            </Container>
-        );
-    };
-
-
-    Template = () => {
-        return (
-            <Container>
-                <Row>
-                    <Col>
-                    </Col>
-                    <Col>
                     </Col>
                 </Row>
             </Container>

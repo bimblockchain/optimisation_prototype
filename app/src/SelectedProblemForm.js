@@ -188,35 +188,28 @@ class SelectedProblemForm extends Component{
         );
     };
 
-    GetProblemContractDetails = () => {
-        return (
-            <Container>
-                <Row>
-                    <Col>
-                        Deets
-                    </Col>
-                    <Col>
-                        <ContractData
-                            contract="Problem"
-                            method="currentState"/>
-                    </Col>
-                    <Col>
-                    <ContractForm
-                            contract="Problem"
-                            method="openProblem"
-                            methodArgs={this.props.accounts[0]}/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <ContractData
-                            contract="Problem"
-                            method="ipfsHash"/>
-                    </Col>
-                </Row>
-            </Container>
-        );
-    };
+    // GetProblemContractDetails = () => {
+    //     return (
+    //         <Container>
+    //             <Row>
+    //                 <Col>
+    //                     Problem ID:
+    //                 </Col>
+    //                 <Col>
+    //                     <ContractData
+    //                         contract="Problem"
+    //                         method="currentState"/>
+    //                 </Col>
+    //                 <Col>
+    //                 <ContractForm
+    //                         contract="Problem"
+    //                         method="openProblem"
+    //                         methodArgs={this.props.accounts[0]}/>
+    //                 </Col>
+    //             </Row>
+    //         </Container>
+    //     );
+    // };
 
     render() {
         if (!(this.state.problemOwnerProblemIdsIndex in this.props.contracts.BIMManager.problemOwnerProblemIds)) { return <span>Fetching...</span>; }
@@ -226,8 +219,8 @@ class SelectedProblemForm extends Component{
                 {this.GetProblemIdFromUserAddress() < 1 ?
                     'Create a problem from this address' :
                     this.ProblemInteractions()}
-
-                {this.contracts.Problem ? this.GetProblemContractDetails() : ''}
+{/* 
+                {this.contracts.Problem ? this.GetProblemContractDetails() : ''} */}
 
                 {this.contracts.Problem ? this.IpfsInteraction() : ''}
 

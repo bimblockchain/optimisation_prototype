@@ -62,6 +62,15 @@ contract Solution is IpfsHashHolder
         _;
     }
 
+    /// @notice Returns the ipsf hash from the attached problem
+    function getAssociatedProblemIpfsHash()
+        public
+        view
+        returns (string memory)
+        {
+            return associatedProblem.ipfsHash();
+        }
+
     /// @notice Accepts the optimised value
     /// @dev Accepts the optimised value
     function sendValue(uint optimisedValue)

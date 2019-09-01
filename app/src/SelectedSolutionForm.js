@@ -112,10 +112,35 @@ class SelectedSolutionForm extends Component{
         console.log(this.state.selectedAddress);
     };
 
+    IpfsFileLink = () => {
+        return (
+        <a href = 'http://127.0.0.1:8080/ipfs/QmR8Djkiq3aNJSxdqTSNPo6RqRXZ9VKd5c6oA5qATNJRS2'>
+            Click Here
+        </a>
+        );
+    }
 
     GetSolutionContractDetails = () => {
         return (
             <Container>
+                <Row>
+                    <Col>
+                        IPFS File Hash
+                    </Col>
+                    <Col>
+                        <ContractData
+                            contract="Solution"
+                            method="getAssociatedProblemIpfsHash"/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        IPFS File Link
+                    </Col>
+                    <Col>
+                        {this.IpfsFileLink()}
+                    </Col>
+                </Row>
                 <Row>
                     <Col>
                         Solution State
@@ -125,12 +150,16 @@ class SelectedSolutionForm extends Component{
                             contract="Solution"
                             method="currentState"/>
                     </Col>
-                    {/* <Col>
-                    <ContractForm
-                            contract="Problem"
-                            method="openProblem"
-                            methodArgs={this.props.accounts[0]}/>
-                    </Col> */}
+                </Row>
+                <Row>
+                    <Col>
+                        Current Optimised Value:
+                    </Col>
+                    <Col>
+                    <ContractData
+                        contract="Solution"
+                        method="currentOptimisedValue"/>
+                    </Col>
                 </Row>
                 <Row>
                     <Col>

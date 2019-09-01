@@ -27,8 +27,6 @@ api.post('/sendTransaction', async (req, res) => {
     console.log(req.body);
     console.log(address);
 
-    console.log(await registerProblemOwner());
-    //await createProblem();
     res.send('Success')
 
 });
@@ -52,3 +50,23 @@ const createProblem = async () => {
 // // web3.eth.getBalance(account).then((val)=> {
 // //     console.log(val);
 // // });
+
+
+
+// using web3 1.0.0-beta.23
+
+// var gethEndpoint = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+// var contract = new gethEndPoint.eth.Contract(contractAbi, contractAddress);
+// var incrementCounter = contract.methods.SmarContractIncrementCounterFunction().encodeABI();
+
+// var transactionToIncrementCounter = gethEndPoint.eth.accounts.signTransaction(
+//     {
+//         data: incrementCounter,
+//         to: contractAddress,
+//         gas: '2000000',
+//         value: '1'
+//     },
+//     '0x' + privateKey
+// );
+
+// gethEndPoint.eth.sendSignedTransaction(transactionToIncrementCounter);
