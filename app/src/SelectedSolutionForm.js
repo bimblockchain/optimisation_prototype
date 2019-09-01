@@ -5,7 +5,6 @@ import { Button, Container, Row, Col } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.css";
 import { ContractData, ContractForm } from "drizzle-react-components";
 import solutionContractArtifacts from './contracts/Solution.json';
-import IpfsForm from "./IpfsForm";
 import BetterContractForm from "./BetterContractForm";
 import BetterContractData from "./BetterContractData";
 
@@ -48,11 +47,16 @@ class SelectedSolutionForm extends Component{
             contractName: 'Solution',
             web3Contract: contract
         };
-        var events = ['problemOpened']
+        var events = [
+            'solutionOpened',
+            'solutionAccepted',
+            'solutionRejected',
+            'solutionCompleted',
+            'solutionCancelled'
+        ]
         this.context.drizzle.addContract(contractConfig, events)
 
         this.state.currentStateIndex = this.contracts.Solution.methods.currentState.cacheCall()
-        this.state.ipfsHashIndex = this.contracts.Solution.methods.ipfsHash.cacheCall()
     };
 
     SolutionInteractions = () => {
@@ -91,6 +95,7 @@ class SelectedSolutionForm extends Component{
                     </Col>
                     <Col>
                         <Button
+                            color="primary"
                             className="btn btn-primary btn-block"
                             onClick={this.LoadSolutionContract}>
                                 Load
@@ -113,7 +118,7 @@ class SelectedSolutionForm extends Component{
             <Container>
                 <Row>
                     <Col>
-                        Solution Details
+                        Solution State
                     </Col>
                     <Col>
                         <ContractData
@@ -127,12 +132,23 @@ class SelectedSolutionForm extends Component{
                             methodArgs={this.props.accounts[0]}/>
                     </Col> */}
                 </Row>
+                <Row>
+                    <Col>
+                        Submit Optimised Value
+                    </Col>
+                    <Col>
+                    <BetterContractForm
+                        contract="Solution"
+                        method="sendValue"
+                        submitText="Send Value"
+                        buttonClassName = "btn btn-primary btn-block"/>
+                    </Col>
+                </Row>
             </Container>
         );
     };
 
     render() {
-        console.log('render');
         if (!(this.state.problemOptimiserSolutionIdsIndex in this.props.contracts.BIMManager.problemOptimiserSolutionIds)) { return <span>Fetching...</span>; }
 
         return (

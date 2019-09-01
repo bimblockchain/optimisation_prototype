@@ -63,7 +63,12 @@ class SelectedProblemForm extends Component{
             contractName: 'Problem',
             web3Contract: contract
         };
-        var events = ['problemOpened']
+        var events = [
+            'problemOpened',
+            'problemSolved',
+            'problemCompleted',
+            'problemCancelled',
+        ]
         this.context.drizzle.addContract(contractConfig, events)
 
         this.state.currentStateIndex = this.contracts.Problem.methods.currentState.cacheCall()
@@ -106,6 +111,7 @@ class SelectedProblemForm extends Component{
                     </Col>
                     <Col>
                         <Button
+                            color="primary"
                             className="btn btn-primary btn-block"
                             onClick={this.LoadProblemContract}>
                                 Load
@@ -138,10 +144,7 @@ class SelectedProblemForm extends Component{
 
     SendIpfsHashToBlockchainClick = async () => {
         var address = await this.GetProblemAddressFromProblemId();
-        console.log(address);
         this.contracts.BIMManager.methods.associateIPFS.cacheSend(this.state.latestIpfsHash, address);
-        console.log('done');
-        //console.log(await this.contracts.Problem.methods.ipfsHash().call());
     };
 
     SendIpfsHashToBlockchain = () => {
@@ -216,7 +219,6 @@ class SelectedProblemForm extends Component{
     };
 
     render() {
-        console.log('render');
         if (!(this.state.problemOwnerProblemIdsIndex in this.props.contracts.BIMManager.problemOwnerProblemIds)) { return <span>Fetching...</span>; }
 
         return (
