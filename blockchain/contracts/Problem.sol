@@ -2,8 +2,8 @@ pragma solidity ^0.5.0;
 
 import "./IpfsHashHolder.sol";
 
-/// @title A contract representing a BIM Problem being represented on the Blockchain
-/// @author Andy Watt & Colin McCrae
+// @title A contract representing a BIM Problem being represented on the Blockchain
+// @author Andy Watt & Colin McCrae
 contract Problem is IpfsHashHolder
 {
     uint public problemId;
