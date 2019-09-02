@@ -12,8 +12,13 @@ namespace grasshopper_extension_console
         static void Main(string[] args)
         {
 
-            var doSomething = new Transaction() { To = "test", From = "456" };
-            BlockchainInteractions.HitTheAddMethod(doSomething).GetAwaiter().GetResult(); ;
+            var doSomething = new Transaction()
+            {
+                ContractAddress = "123",
+                PrivateKey = "456",
+                OptimisedValue = 43
+            };
+            BlockchainInteractions.SendOptimisedValue(doSomething).GetAwaiter().GetResult(); ;
             
             Console.ReadLine();
 

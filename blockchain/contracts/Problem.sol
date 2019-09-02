@@ -12,8 +12,8 @@ contract Problem is IpfsHashHolder
     address[] public solutions;
     address public problemOwner;
 
-    /// @notice Deploys an instance of the Problem contract
-    /// @dev Stores the Problem id for this contract and sets the state to initialised
+    // @notice Depolys an instance of the Problem contract
+    // @dev Stores the Problem id for this contract and sets the state to initialised
     constructor (uint _problemId, address _problemOwner) public payable
     {
         problemId = _problemId;
@@ -21,29 +21,29 @@ contract Problem is IpfsHashHolder
         currentState = ProblemState.Initialised; // Contract starts in 'Initialised' state
     }
 
-        /// @notice An event indicating that the contract state has been set to Opened
+    // @notice An event indicating that the contract state has been set to Opened
     event problemOpened();
 
-    /// @notice An event indicating that the contract state has been set to Solved
+    // @notice An event indicating that the contract state has been set to Solved
     event problemSolved();
 
-    /// @notice An event indicating that the contract state has been set to Completed
+    // @notice An event indicating that the contract state has been set to Completed
     event problemCompleted();
 
-    /// @notice An event indicating that the contract state has been set to Cancelled
+    // @notice An event indicating that the contract state has been set to Cancelled
     event problemCancelled();
 
-    /// @notice An enumeration of the possible contract states
+    // @notice An enumeration of the possible contract states
     enum ProblemState { Initialised, Opened, Solved, Completed, Cancelled }
 
-    /// @notice Modifier to check the currentState against a required state
+    // @notice Modifier to check the currentState against a required state
     modifier checkState(ProblemState requiredState)
     {
         require(currentState == requiredState, "Contract is not in the correct state");
         _;
     }
 
-    /// @notice Modifier to check that the IPFS has with the problem specification is not null
+    // @notice Modifier to check that the IPFS has with the problem specification is not null
     modifier hasIpfsHash()
     {
         bytes memory textRepresentation = bytes(ipfsHash);
@@ -51,15 +51,15 @@ contract Problem is IpfsHashHolder
         _;
     }
 
-    /// @notice Modifier to check the the caller is the owner of this problem contract
+    // @notice Modifier to check the the caller is the owner of this problem contract
     modifier onlyProblemOwner()
     {
         require(msg.sender == problemOwner, "Caller is not Problem Owner");
         _;
     }
 
-    /// @notice Moves a draft problem to 'Opened' and ready to accept bids
-    /// @dev sets the enum to ProblemState.Opened
+    // @notice Moves a draft problem to 'Opened' and ready to accept bids
+    // @dev sets the enum to ProblemState.Opened
     function openProblem()
         public
         onlyProblemOwner()
@@ -72,8 +72,8 @@ contract Problem is IpfsHashHolder
         return currentState;
     }
 
-    /// @notice Returns a boolean indicating is the Problem is Opened
-    /// @dev A work-around because handling enumerations in the UI is challenging
+    // @notice Returns a boolean indicating is the Problem is Opened
+    // @dev A work-around because handling enumerations in the UI is challenging
     function problemIsOpen()
         public
         view
@@ -82,9 +82,9 @@ contract Problem is IpfsHashHolder
         return currentState == ProblemState.Opened;
     }
 
-    /// @notice Moves an opened problem to Solved, a winner has been selected
-    /// @dev sets the enum to ProblemState.Solved, and stores the winning address
-    /// @param _winner the address of the winning bid
+    // @notice Moves an opened problem to Solved, a winner has been selected
+    // @dev sets the enum to ProblemState.Solved, and stores the winning address
+    // @param _winner the address of the winning bid
     function solveProblem(address _winner)
         public
         onlyProblemOwner()
@@ -97,8 +97,8 @@ contract Problem is IpfsHashHolder
         return currentState;
     }
 
-    /// @notice Returns a boolean indicating is the Problem is Solved
-    /// @dev A work-around because handling enulerations in the UI is challenging
+    // @notice Returns a boolean indicating is the Problem is Solved
+    // @dev A work-around because handling enulerations in the UI is challenging
     function problemIsSolved()
         public
         view
@@ -107,8 +107,8 @@ contract Problem is IpfsHashHolder
         return currentState == ProblemState.Solved;
     }
 
-    /// @notice Moves an Awarded contract to completed
-    /// @dev sets the enum to ProblemState.Completed
+    // @notice Moves an Awarded contract to completed
+    // @dev sets the enum to ProblemState.Completed
     function completedProblem()
         public
         onlyProblemOwner()
@@ -120,8 +120,8 @@ contract Problem is IpfsHashHolder
         return currentState;
     }
 
-    /// @notice Returns a boolean indicating is the Problem is Completed
-    /// @dev A work-around because handling enulerations in the UI is challenging
+    // @notice Returns a boolean indicating is the Problem is Completed
+    // @dev A work-around because handling enulerations in the UI is challenging
     function problemIsCompleted()
         public
         view
@@ -130,8 +130,8 @@ contract Problem is IpfsHashHolder
         return currentState == ProblemState.Completed;
     }
 
-        /// @notice Cancels a contract, from any state
-    /// @dev sets the enum to ProblemState.Cancelled, and does the required clean up
+    // @notice Cancels a contract, from any state
+    // @dev sets the enum to ProblemState.Cancelled, and does the required clean up
     function cancelProblem()
         public
         onlyProblemOwner()
@@ -142,8 +142,8 @@ contract Problem is IpfsHashHolder
         return currentState;
     }
 
-    /// @notice Returns a boolean indicating is the Problem is Cancelled
-    /// @dev A work-around because handling enulerations in the UI is challenging
+    // @notice Returns a boolean indicating is the Problem is Cancelled
+    // @dev A work-around because handling enulerations in the UI is challenging
     function problemIsCancelled()
         public
         view
@@ -152,7 +152,7 @@ contract Problem is IpfsHashHolder
         return currentState == ProblemState.Cancelled;
     }
 
-    /// @notice function called by a problem solver to notify the problem owner of their proposal
+    // @notice function called by a problem solver to notify the problem owner of their proposal
     function attachSolution(address solutionAddress)
         public
         checkState(ProblemState.Opened)
@@ -161,6 +161,5 @@ contract Problem is IpfsHashHolder
         solutions.push(solutionAddress);
         return true;
     }
-
 }
 
