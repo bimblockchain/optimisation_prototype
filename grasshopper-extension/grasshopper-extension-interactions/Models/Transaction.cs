@@ -8,10 +8,8 @@ namespace grasshopper_extension
 {
     public class Transaction
     {
-        public string From { get; set; }
-        public string To { get; set; }
-        public string Value { get; set; }
-        public string Gas { get; set; }
-        public string GasPrice { get; set; }
+        public string ContractAddress { get; set; }
+        public string PrivateKey { get; set; }
+        public int OptimisedValue { get; set; }
     }
 }
