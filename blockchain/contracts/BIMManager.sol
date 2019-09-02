@@ -173,4 +173,26 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         {
         return totalSolutions;
     }
+
+    /// @notice Attaches an IPFS hash to either a tender or a bid
+    /// @dev Attaches an IPFS hash to either a tender or a bid
+    function associateIPFS (string memory ipfsHash, address ipfsHolderAddress)
+        public
+        returns (bool)
+    {
+        IpfsHashHolder ipfsHashHolder = IpfsHashHolder(address(ipfsHolderAddress));
+        ipfsHashHolder.setIpfsHash(ipfsHash);
+        return true;
+    }
+
+    /// @notice. A shortcut to send a value to a solution by ID
+    /// @dev Shortcuts straight to the solution.
+    function sendValueToSolution(uint solutionId, uint optimisedValue)
+    public
+    returns (bool)
+    {
+        Solution solution = Solution(address(solutionIdAddresses[solutionId]));
+        solution.sendValue(optimisedValue);
+        return true;
+    }
 }

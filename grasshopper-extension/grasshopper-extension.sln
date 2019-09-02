@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grasshopper-extension", "gr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grasshopper-extension-interactions", "grasshopper-extension-interactions\grasshopper-extension-interactions.csproj", "{D6A72ABB-2452-4385-AFA9-13F30D11CD7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grasshopper-extension-console", "grasshopper-extension-console\grasshopper-extension-console.csproj", "{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{D6A72ABB-2452-4385-AFA9-13F30D11CD7F}.Debug64|Any CPU.Build.0 = Debug|Any CPU
 		{D6A72ABB-2452-4385-AFA9-13F30D11CD7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6A72ABB-2452-4385-AFA9-13F30D11CD7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Debug32|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Debug32|Any CPU.Build.0 = Debug|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Debug64|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Debug64|Any CPU.Build.0 = Debug|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8E3664B-82BF-4D8B-8764-6EA1CEE430F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -67,6 +67,10 @@ namespace grasshopper_extension
             
             // Set the output parameter
             DA.SetData(0, blockchainInteractions.CreateJson(address, password, param));
+
+            // Hit the add method
+            var doSomething = new Transaction() { To = "123", From = "456" };
+            BlockchainInteractions.HitTheAddMethod(doSomething).GetAwaiter().GetResult(); ;
         }
 
         /// <summary>

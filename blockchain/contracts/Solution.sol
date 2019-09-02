@@ -7,6 +7,7 @@ import "./Problem.sol";
 /// @author Andy Watt & Colin McCrae
 contract Solution is IpfsHashHolder
 {
+    uint public currentOptimisedValue;
     uint public solutionId;
     SolutionState public currentState;
     Problem public associatedProblem;
@@ -59,6 +60,25 @@ contract Solution is IpfsHashHolder
         bytes memory textRepresentation = bytes(ipfsHash);
         require (textRepresentation.length > 0, "IPFS has is required");
         _;
+    }
+
+    /// @notice Returns the ipsf hash from the attached problem
+    function getAssociatedProblemIpfsHash()
+        public
+        view
+        returns (string memory)
+        {
+            return associatedProblem.ipfsHash();
+        }
+
+    /// @notice Accepts the optimised value
+    /// @dev Accepts the optimised value
+    function sendValue(uint optimisedValue)
+        public
+        returns (bool)
+    {
+        currentOptimisedValue = optimisedValue;
+        return true;
     }
 
     /// @notice Moves a draft solution to 'Opened'
