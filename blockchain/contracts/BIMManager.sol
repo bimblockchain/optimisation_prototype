@@ -185,7 +185,7 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return true;
     }
 
-    // @notice. A shortcut to send a value to a solution by ID
+    // @notice A shortcut to send a value to a solution by ID
     // @dev Shortcuts straight to the solution.
     function sendValueToSolution(uint solutionId, uint optimisedValue)
     public
