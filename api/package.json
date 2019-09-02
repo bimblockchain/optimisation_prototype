@@ -11,10 +11,12 @@
     "truffle-contract": "^4.0.30",
     "web3": "^1.2.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "api": "node -r esm .\\src\\index.js"
+    "api": "nodemon -r esm .\\src\\index.js"
   },
   "repository": {
     "type": "git",

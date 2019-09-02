@@ -1,56 +1,56 @@
 import React from "react";
 import {
     AccountData,
-    ContractData,
-    ContractForm,
 } from "drizzle-react-components";
-import IpfsForm from "./IpfsForm"
-
-import logo from "./logo.png";
+import ProblemOwnerForm from "./ProblemOwnerForm";
+import ProblemOptimiserForm from "./ProblemOptimiserForm";
+import SelectedProblemForm from "./SelectedProblemForm";
+import SelectedSolutionForm from "./SelectedSolutionForm";
+import "bootstrap/dist/css/bootstrap.css";
 
 export default ({ accounts }) => (
-    <div className="App">
-        <div className="section">
-            <h2>Active Account</h2>
-            <AccountData accountIndex="0" units="ether" precision="3" />
+    <div>
+        <div className="jumbotron text-center">
+            <h1>BIM Blockchain Prototype</h1>
+            <p>Example integration between Grasshoopper and the Ethereum Blockchain</p>
         </div>
-        <p> This UI is a very simple reference implementation that allows the full life cycle of a tender to be assessed. This is simply intended to demonstrate how the contract interactions work, this is not a complete UI for this tendering system. </p>
-        <br />
-        <table border="1">
-            <tbody>
-            <tr>
-                <td>
-                    Register as Client
-                </td>
-                <td>
-                    Unegister as Client
-                </td>
-                <td>
-                    Is Registered Client
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <ContractForm
-                        contract="BIMManager"
-                        method="registerProblemOwner"
-                        labels={["Register as ProblemOwner"]}/>
-                </td>
-                <td>
-                    <ContractForm
-                        contract="BIMManager"
-                        method="unregisterProblemOwnert"
-                        labels={["Unregister as ProblemOwner"]}/>
-                </td>
-                <td>
-                    <ContractData
-                        contract="BIMManager"
-                        method="registeredProblemOwners"
-                        methodArgs={[accounts[0]]}
-                        labels={["Check Registered"]}/>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div className="container">
+            <div className="row">
+                <div className="col-sm-3">
+                    Account Details:
+                </div>
+                <div className="col-sm-9">
+                    <AccountData accountIndex={0} units="ether" precision={3} />
+                </div>
+            </div>
+            <hr />
+
+            <div className="row">
+                <div className="col-sm-6">
+                    <h3>Problem Owner Details</h3>
+                    <ProblemOwnerForm accounts = {accounts}/>
+                </div>
+                <div className="col-sm-6">
+                    <h3>Selected Problem Details</h3>
+                    <SelectedProblemForm accounts = {accounts}/>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-sm-6">
+                    <h3>Problem Optimiser Details</h3>
+                    <ProblemOptimiserForm accounts = {accounts}/>
+                </div>
+                <div className="col-sm-6">
+                    <h3>Selected Solution Details</h3>
+                    <SelectedSolutionForm accounts = {accounts}/>
+                </div>
+            </div>
+        </div>
     </div>
 );
+
+
+
+
+

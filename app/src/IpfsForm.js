@@ -37,10 +37,10 @@ class IpfsForm extends Component {
         event.preventDefault();
 
         await ipfs.add(this.state.buffer, (err, ipfsHash) => {
-            console.log(err,ipfsHash);
-            console.log('IPFS hash is:' + ipfsHash);
             this.setState({ ipfsHash: ipfsHash[0].hash });
-        })
+            console.log(this.props.callBack);
+            this.props.callBack(ipfsHash[0].hash);
+         })
     };
 
     render() {
@@ -61,7 +61,7 @@ IpfsForm.contextTypes = {
     drizzle: PropTypes.object
 }
 
-  /*
+    /*
    * Export connected component.
    */
 

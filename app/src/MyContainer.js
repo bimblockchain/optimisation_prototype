@@ -5,6 +5,7 @@ const mapStateToProps = state => {
   return {
     accounts: state.accounts,
     drizzleStatus: state.drizzleStatus,
+    BIMManager: state.contracts.BIMManager
   };
 };
 
