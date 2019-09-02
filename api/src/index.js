@@ -23,6 +23,7 @@ api.post('/add', (req, res) => {
     res.send('It works!');
 });
 
+
 api.post('/sendTransaction', async (req, res) => {
     console.log('start of blockchain interaction');
     var optimisedValue = req.body.OptimisedValue;

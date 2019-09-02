@@ -27,9 +27,9 @@ namespace grasshopper_extension
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             // The list of input parameters required to create the transaction to send to the blockchain
-            pManager.AddTextParameter("Password", "Pwb", "Password to unlock the account", GH_ParamAccess.item);
-            pManager.AddTextParameter("Address", "Ad", "Address", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Optimised Value", "Val", "The result of the optimisation", GH_ParamAccess.item);
+            pManager.AddTextParameter("ContractAddress", "CtrAddr", "The address of the Solution Contract", GH_ParamAccess.item);
+            pManager.AddTextParameter("PrivateKey", "pkey", "Address", GH_ParamAccess.item);
+            pManager.AddNumberParameter("OptimisedValue", "Val", "The result of the optimisation", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -49,28 +49,33 @@ namespace grasshopper_extension
         protected override void SolveInstance(IGH_DataAccess DA)
         { 
             // Declare the variables for the inputs
-            string password = null;
-            string address = null;
-            double param = double.NaN;
+            string contractAddress = null;
+            string privateKey = null;
+            double optimisedValue = double.NaN;
 
             //If the retrieve fails (because there is no data) then we return
-            if (!DA.GetData(0, ref password)) { return; }
-            if (!DA.GetData(1, ref address)) { return; }
-            if (!DA.GetData(2, ref param)) { return; }
+            if (!DA.GetData(0, ref contractAddress)) { return; }
+            if (!DA.GetData(1, ref privateKey)) { return; }
+            if (!DA.GetData(2, ref optimisedValue)) { return; }
 
             // Return if the retrieved data is null or empty
-            if (string.IsNullOrEmpty(password)) { return; }
-            if (string.IsNullOrEmpty(address)) { return; }
-            if (double.IsNaN(param)) { return; }
+            if (string.IsNullOrEmpty(contractAddress)) { return; }
+            if (string.IsNullOrEmpty(privateKey)) { return; }
+            if (double.IsNaN(optimisedValue)) { return; }
 
             var blockchainInteractions = new BlockchainInteractions();
             
             // Set the output parameter
-            DA.SetData(0, blockchainInteractions.CreateJson(address, password, param));
+            DA.SetData(0, blockchainInteractions.CreateJson(contractAddress, privateKey, optimisedValue));
 
             // Hit the add method
-            var doSomething = new Transaction() { To = "123", From = "456" };
-            BlockchainInteractions.HitTheAddMethod(doSomething).GetAwaiter().GetResult(); ;
+            var doSomething = new Transaction() {
+                ContractAddress = contractAddress,
+                PrivateKey = privateKey,
+                OptimisedValue = (int)optimisedValue
+            };
+
+            BlockchainInteractions.SendOptimisedValue(doSomething).GetAwaiter().GetResult(); ;
         }
 
         /// <summary>

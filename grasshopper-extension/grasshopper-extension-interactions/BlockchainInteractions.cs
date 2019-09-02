@@ -23,10 +23,10 @@ namespace grasshopper_extension
 
         static HttpClient client = new HttpClient();
 
-        public static async Task<Uri> HitTheAddMethod(Transaction transaction)
+        public static async Task<Uri> SendOptimisedValue(Transaction transaction)
         {
             HttpResponseMessage response = await client.PostAsJsonAsync(
-            "add", transaction);
+            "sendTransaction", transaction);
             response.EnsureSuccessStatusCode();
 
             // return URI of the created resource.
