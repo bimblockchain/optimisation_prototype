@@ -15,7 +15,7 @@ namespace grasshopper_extension
 
         static BlockchainInteractions()
         {
-            client.BaseAddress = new Uri("http://localhost:3000/");
+            client.BaseAddress = new Uri("http://localhost:3001/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
