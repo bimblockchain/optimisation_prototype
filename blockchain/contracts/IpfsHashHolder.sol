@@ -2,17 +2,17 @@ pragma solidity ^0.5.0;
 
 contract IpfsHashHolder
 {
-    /// @notice The variable too store the IPFS hash
-    /// @dev The variable too store the IPFS hash
+    // @notice The variable too store the IPFS hash
+    // @dev The variable too store the IPFS hash
     string public ipfsHash;
 
-    /// @notice An event which is raised whhen the hash is set
-    /// @dev Emits a string param representing the hash
+    // @notice An event which is raised whhen the hash is set
+    // @dev Emits a string param representing the hash
     event ipfsSent(string _ipfsHash);
 
-    /// @notice This modifier tests that a valid IPFS hash is submitted
-    /// @dev At this stage, this only protects against an empty string
-    /// @param _ipfsHash a string which should represent a valid IPFS hash
+    // @notice This modifier tests that a valid IPFS hash is submitted
+    // @dev At this stage, this only protects against an empty string
+    // @param _ipfsHash a string which should represent a valid IPFS hash
     modifier validIpfsHash (string memory _ipfsHash)
     {
         bytes memory stringTest = bytes(_ipfsHash);
@@ -22,9 +22,9 @@ contract IpfsHashHolder
         _;
     }
 
-    /// @notice This fdunction sets the IpfsHash string
-    /// @dev See comments on validIpfsHash modifier. Emits ipfsSent event
-    /// @param _ipfsHash a string which should represent a valid IPFS hash
+    // @notice This fdunction sets the IpfsHash string
+    // @dev See comments on validIpfsHash modifier. Emits ipfsSent event
+    // @param _ipfsHash a string which should represent a valid IPFS hash
     function setIpfsHash(string memory _ipfsHash)
         public
         validIpfsHash(_ipfsHash)
@@ -35,8 +35,8 @@ contract IpfsHashHolder
         return ipfsHash;
     }
 
-    /// @notice Clears the stored hash
-    /// @dev Clears the strored hash
+    // @notice Clears the stored hash
+    // @dev Clears the strored hash
     function clearHash()
         public
         returns (bool)
@@ -45,8 +45,8 @@ contract IpfsHashHolder
         emit ipfsSent(ipfsHash);
     }
 
-    /// @notice Checks if the IPFS hash is set or not
-    /// @dev Converts the hash to a byte array, and tests that it's length is >0
+    // @notice Checks if the IPFS hash is set or not
+    // @dev Converts the hash to a byte array, and tests that it's length is >0
     function hashIsSet()
         public
         view

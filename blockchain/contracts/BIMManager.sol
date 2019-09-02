@@ -6,12 +6,12 @@ import "./IpfsHashHolder.sol";
 import "./Problem.sol";
 import "./Solution.sol";
 
-/// @title BIMManager: Blockchain Solver Plug-in for Grasshopper
+// @title BIMManager: Blockchain Solver Plug-in for Grasshopper
 // Connects the Rhino 3D Modelling Software with Grasshopper scripting and Galapagos solver
 // to the Ethereum Blockchain to submit and solve optimisation problems with rewards.
-/// @dev Contract Project will inherit the contracts Ownable and Pausable from the OpenZeppelin library
-/// @dev Pausable is a circuit breaker which blocks all contract functions expect withdrawal by the owner
-/// @author Andy Watt & Colin McCrae
+// @dev Contract Project will inherit the contracts Ownable and Pausable from the OpenZeppelin library
+// @dev Pausable is a circuit breaker which blocks all contract functions expect withdrawal by the owner
+// @author Andy Watt & Colin McCrae
 contract BIMManager is Ownable, Pausable, IpfsHashHolder
 {
     uint totalProblems; // Initially zero
@@ -33,25 +33,25 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
 
     // No non-default constructor required
 
-    /// @notice Modifier which ensures that the sender is registered as a Problem Owner.
-    /// @dev Checks that the sender address has an entry in registeredProblemOwners.
+    // @notice Modifier which ensures that the sender is registered as a Problem Owner.
+    // @dev Checks that the sender address has an entry in registeredProblemOwners.
     modifier callerIsRegisteredProblemOwner()
     {
         require (registeredProblemOwners[msg.sender], "Caller is not a registered Problem Owner");
         _;
     }
 
-    /// @notice Modifier which ensures that the sender is registered as a Problem Optimiser.
-    /// @dev Checks that the sender address has an entry in registeredProblemOptimisers.
+    // @notice Modifier which ensures that the sender is registered as a Problem Optimiser.
+    // @dev Checks that the sender address has an entry in registeredProblemOptimisers.
     modifier callerIsRegisteredProblemOptimiser()
     {
         require (registeredProblemOptimisers[msg.sender], "Caller is not a registered Problem Optimiser");
         _;
     }
 
-    /// @notice Registers a new Problem Owner.
-    /// @dev updates the registeredProblemOwners mapping.
-    /// @return a boolean indicating success.
+    // @notice Registers a new Problem Owner.
+    // @dev updates the registeredProblemOwners mapping.
+    // @return a boolean indicating success.
     function registerProblemOwner()
         public
         whenNotPaused()
@@ -66,9 +66,9 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return true;
     }
 
-    /// @notice Unregisters an existing Problem Owner.
-    /// @dev updates the registeredProblemOwners mapping.
-    /// @return a boolean indicating success.
+    // @notice Unregisters an existing Problem Owner.
+    // @dev updates the registeredProblemOwners mapping.
+    // @return a boolean indicating success.
     function unregisterProblemOwner()
         public
         whenNotPaused()
@@ -83,9 +83,9 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return true;
     }
 
-    /// @notice Registers a new Problem Optimiser.
-    /// @dev updates the registeredProblemOptimisers mapping.
-    /// @return a boolean indicating success.
+    // @notice Registers a new Problem Optimiser.
+    // @dev updates the registeredProblemOptimisers mapping.
+    // @return a boolean indicating success.
     function registerProblemOptimiser()
         public
         whenNotPaused()
@@ -100,9 +100,9 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return true;
     }
 
-    /// @notice Unregisters an existing Problem Owner.
-    /// @dev updates the registeredProblemOwners mapping.
-    /// @return a boolean indicating success.
+    // @notice Unregisters an existing Problem Owner.
+    // @dev updates the registeredProblemOwners mapping.
+    // @return a boolean indicating success.
     function unregisterProblemOptimiser()
         public
         whenNotPaused()
@@ -117,8 +117,8 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return true;
     }
 
-    /// @notice Creates a new problem for a registered problem owner.
-    /// @dev Deploys a new instance of the Problem contract, and associates it with the calling problem owner.
+    // @notice Creates a new problem for a registered problem owner.
+    // @dev Deploys a new instance of the Problem contract, and associates it with the calling problem owner.
     function createProblem()
         public
         payable
@@ -137,8 +137,8 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return newProblemAddress;
     }
 
-    /// @notice Creates a new Solution for a registerd problem optimiser
-    /// @dev Deploys a new instance of the Solution contract, and associates it with the calling Problem owner.
+    // @notice Creates a new Solution for a registerd problem optimiser
+    // @dev Deploys a new instance of the Solution contract, and associates it with the calling Problem owner.
     function createSolution(uint problemId)
         public
         whenNotPaused()
@@ -156,7 +156,7 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return newSolutionAddress;
     }
 
-    /// @dev Returns the current total number of problems
+    // @dev Returns the current total number of problems
     function getTotalProblems()
         public
         view
@@ -165,7 +165,7 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return totalProblems;
     }
 
-    /// @dev Returns the current total number of solutions
+    // @dev Returns the current total number of solutions
     function getTotalSolutions()
         public
         view
@@ -174,8 +174,8 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return totalSolutions;
     }
 
-    /// @notice Attaches an IPFS hash to either a tender or a bid
-    /// @dev Attaches an IPFS hash to either a tender or a bid
+    // @notice Attaches an IPFS hash to either a tender or a bid
+    // @dev Attaches an IPFS hash to either a tender or a bid
     function associateIPFS (string memory ipfsHash, address ipfsHolderAddress)
         public
         returns (bool)
@@ -185,8 +185,8 @@ contract BIMManager is Ownable, Pausable, IpfsHashHolder
         return true;
     }
 
-    /// @notice. A shortcut to send a value to a solution by ID
-    /// @dev Shortcuts straight to the solution.
+    // @notice. A shortcut to send a value to a solution by ID
+    // @dev Shortcuts straight to the solution.
     function sendValueToSolution(uint solutionId, uint optimisedValue)
     public
     returns (bool)
