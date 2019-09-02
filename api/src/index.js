@@ -14,7 +14,7 @@ const bimManagerContract = new web3.eth.Contract(abi, address);
 api.use(express.static(__dirname + '/public'));
 api.use(bodyParser.json())
 
-api.listen(3000, () => {
+api.listen(3001, () => {
     console.log('API up and running');
 });
 
@@ -26,8 +26,9 @@ api.post('/add', (req, res) => {
 api.post('/sendTransaction', async (req, res) => {
     console.log('start of blockchain interaction');
     var optimisedValue = req.body.OptimisedValue;
-    var contractAddress = req.body.Address;
+    var contractAddress = req.body.ContractAddress;
     var privateKey = req.body.PrivateKey;
+
     var contractAbi = Solution.abi;
     var contract = new web3.eth.Contract(contractAbi, contractAddress);
     var sendValue = contract.methods.sendValue(optimisedValue).encodeABI();
@@ -35,8 +36,7 @@ api.post('/sendTransaction', async (req, res) => {
         {
             data: sendValue,
             to: contractAddress,
-            gas: '2000000',
-            value: '1'
+            gas: '2000000'
         },
         privateKey
     );
