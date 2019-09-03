@@ -152,7 +152,6 @@ class SelectedProblemForm extends Component{
     };
 
     renderState = (stateId) =>{
-        console.log(stateId);
         var stateName = "";
         switch(stateId) {
             case "0":
