@@ -8,10 +8,6 @@ namespace grasshopper_extension
 {
     public class BlockchainInteractions
     {
-        public string CreateJson(string address, string password, double value)
-        {
-            return $" PWD:{password} - ADD:{address} - Param:{value} - From Class Lib 123456";
-        }
 
         static BlockchainInteractions()
         {
@@ -32,6 +28,5 @@ namespace grasshopper_extension
             // return URI of the created resource.
             return response.Headers.Location;
         }
-
     }
 }
