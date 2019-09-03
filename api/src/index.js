@@ -1,26 +1,16 @@
 const Web3 = require('web3');
-import BIMManager from '../../app/src/contracts/BIMManager.json';
 import Solution from '../../app/src/contracts/Solution.json';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
 const express = require('express');
 const bodyParser = require('body-parser');
 const api = express();
-const abi = BIMManager.abi;
-const networkId = "4447" //set this for ganache-cli
-const address = BIMManager.networks[networkId].address;
-const bimManagerContract = new web3.eth.Contract(abi, address);
 
 api.use(express.static(__dirname + '/public'));
 api.use(bodyParser.json())
 
 api.listen(3001, () => {
     console.log('API up and running');
-});
-
-api.post('/add', (req, res) => {
-    console.log(req.body);
-    res.send('It works!');
 });
 
 

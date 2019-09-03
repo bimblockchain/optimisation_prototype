@@ -237,7 +237,7 @@ class SelectedProblemForm extends Component{
 
                 {this.contracts.Problem ? this.IpfsInteraction() : ''}
 
-                {this.state.latestIpfsHash? this.SendIpfsHashToBlockchain() : ''}
+                {this.contracts.Problem ? this.SendIpfsHashToBlockchain() : ''}
             </div>
         );
     }

@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "a880370b-ddda-4b97-924c-343ea3652230",
+		"name": "bim-blockchain",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "bim-blockchain-test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ContractAddress\": \"0x123\", \n\t\"PrivateKey\": \"0x456\",\n\t\"OptimisedValue\": 42\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/sendTransaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"sendTransaction"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
