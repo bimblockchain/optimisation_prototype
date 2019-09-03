@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace grasshopper_extension
 {
     public class BIMBlockchainComponent : GH_Component
     {
+        private HttpResponseMessage response;
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
         /// constructor without any arguments.
@@ -16,7 +21,7 @@ namespace grasshopper_extension
         /// </summary>
         public BIMBlockchainComponent()
           : base("BIM Blockchain", "BIM",
-              "Plugin to transmit data to the Ethereum blockchain (Rinkeby testnet)",
+              "Plugin to transmit data to the Ethereum blockchain",
               "Blockchain", "BIM Blockchain")
         {
         }
@@ -64,18 +69,17 @@ namespace grasshopper_extension
             if (double.IsNaN(optimisedValue)) { return; }
 
             var blockchainInteractions = new BlockchainInteractions();
-            
-            // Set the output parameter
-            DA.SetData(0, blockchainInteractions.CreateJson(contractAddress, privateKey, optimisedValue));
-
-            // Hit the add method
-            var doSomething = new Transaction() {
+            var doSomething = new Transaction()
+            {
                 ContractAddress = contractAddress,
                 PrivateKey = privateKey,
                 OptimisedValue = (int)optimisedValue
             };
 
-            BlockchainInteractions.SendOptimisedValue(doSomething).GetAwaiter().GetResult(); ;
+            BlockchainInteractions.SendOptimisedValue(doSomething);
+
+            // Set the output parameter
+            DA.SetData(0, $"Value: {(int)optimisedValue} sent to blockchain");
         }
 
         /// <summary>
