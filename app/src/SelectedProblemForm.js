@@ -151,6 +151,30 @@ class SelectedProblemForm extends Component{
         border: '5px solid white'
     };
 
+    renderState = (stateId) =>{
+        var stateName = "";
+        switch(stateId) {
+            case "0":
+                stateName = "Initialised";
+                break;
+            case "1":
+                stateName = "Open";
+                break;
+            case "2":
+                stateName = "Solved";
+                break;
+            case "3":
+                stateName = "Complete";
+                break;
+            case "4":
+                stateName = "Cancelled";
+                break;
+            default:
+                stateName = "Unknown"
+        }
+        return <p>{stateName}</p>
+    };
+
     SendIpfsHashToBlockchain = () => {
         return (
             <Container>
@@ -160,7 +184,7 @@ class SelectedProblemForm extends Component{
                     </Col>
                     <Col>
                     <Button className='btn btn-primary btn-block' onClick={this.SendIpfsHashToBlockchainClick}>
-                        Send IPFS
+                        Send Hash to Contract
                     </Button>
                     </Col>
                 </Row>
@@ -184,6 +208,17 @@ class SelectedProblemForm extends Component{
                         method="openProblem"
                         submitText="Open"
                         buttonClassName = "btn btn-primary btn-block"/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        Problem State
+                    </Col>
+                    <Col>
+                        <ContractData
+                            contract="Problem"
+                            method="currentState"
+                            render={this.renderState}/>
                     </Col>
                 </Row>
                 <Row style={this.divStyle}>
