@@ -1,0 +1,8 @@
+Code
+review the smart contracts and test upgradeability with OpnZeppelin 0.8.0
+review the plugin development and test compatability with Python setup
+
+Functionality
+review what needs to b done to turn these smart contracts into a project management platform for design in dBIM
+
+
